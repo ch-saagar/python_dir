@@ -1,0 +1,39 @@
+#DP------>> (Top Down approach)
+#Top Down Approach -->> Iterative + Grid
+class Solution:
+    #Function to return max value that can be put in knapsack of capacity W.
+    def knapSack(self,W, wt, val, n):
+        # make a grid of action variable i.e., W and n
+        # and fill it with 0
+        dp = [[0 for i in range(W + 1)] for j in range(n + 1)]
+        # here, we'll use iterative approach
+        for i in range(1,n+1):
+            for j in range(1,W+1):
+                # Base Conditions
+                # if capacity of bag i.e., W is 0 or
+                # if the size of given weightlist is 0 then 
+                # we can't be able to choose any bag
+                # so with this base condn we will do initialization and
+                # fill 0 in grid when i is 0 or j is 0
+                if i==0 or j==0:
+                    dp[i][j]=0
+                # if the weight of a particular element is less than the weight 
+                # of the given capacity of the bag then we can either consider the element or leave it
+                elif wt[i-1] <= j:
+                 #here, we two have choices....!!
+                 # taken means we are considering the element
+                    taken = val[i-1]+dp[i-1][j-wt[i-1]]
+                 # not_taken means we are not considering the element
+                    not_taken = dp[i-1][j]
+                 # we need a optimal ans i.e., max profit 
+                 # so take max of taken and not taken profit 
+                 # it will let us know whether we are getting maximum profit by taking a element 
+                 # or by leaving the element
+                    dp[i][j] = max(taken, not_taken )
+                elif wt[i-1] > j:
+                 # if weight of a particular element is greater than the weight capacity
+                 # of the bag then our bag will not be able to bear the weight of 
+                 # that particular element so just  skip the element and continue taking other element
+                    dp[i][j] = dp[i-1][j]
+            # append the ans in dp and return it
+        return dp[n][W]
